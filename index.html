@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Mensagem Especial para o Dia das Mães</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Pré-carregar fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #fec9f9;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+    }
+
+    @media (min-width: 768px) {
+      body {
+        padding: 50px;
+      }
+    }
+
+    h1 {
+      color: #ff69b4;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 1.2rem;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    input, textarea {
+      padding: 14px;
+      border-radius: 12px;
+      border: 1px solid #ddd;
+      font-size: 18px;
+      width: 80%;
+      max-width: 600px;
+      margin: 12px 0;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: none;
+      min-height: 150px;
+      max-height: 300px;
+    }
+
+    button {
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      padding: 14px 30px;
+      font-size: 18px;
+      border-radius: 10px;
+      cursor: pointer;
+      margin: 10px 5px;
+    }
+
+    button:hover {
+      background-color: #ff1493;
+    }
+
+    .whatsapp-btn {
+      background-color: #25D366;
+      color: white;
+      padding: 14px 30px;
+      border-radius: 10px;
+      margin-top: 20px;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .whatsapp-btn:hover {
+      background-color: #128C7E;
+    }
+
+    .whatsapp-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+    }
+
+    .message-container {
+      padding: 40px;
+      border-radius: 15px;
+      background: #fff;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      margin: 20px auto;
+    }
+
+    #imagemPreview canvas {
+      margin-top: 30px;
+      border-radius: 15px;
+      max-width: 100%;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    #btnDownload {
+      display: none;
+      background-color: #6c63ff;
+    }
+
+    .message-style {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .message-title {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 36px;
+      color: #ff69b4;
+      margin-bottom: 30px;
+      text-transform: uppercase;
+    }
+
+    .message-content {
+      font-size: 22px;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .message-name {
+      color: #ff1493;
+      font-weight: 500;
+    }
+  </style>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+<body>
+
+  <h1>💐 Mensagem Especial para o Dia das Mães 💐</h1>
+  <p>Crie uma mensagem especial para a sua mãe e compartilhe o seu carinho com ela de uma forma única.</p>
+
+  <section class="message-container">
+    <h2>Insira o nome da sua mãe:</h2>
+    <label for="nomeMae" class="sr-only">Nome da mãe</label>
+    <input type="text" id="nomeMae" placeholder="Nome da mãe" aria-required="true"><br><br>
+
+    <h2>Mensagem gerada automaticamente:</h2>
+    <div id="mensagem" role="region" aria-live="polite"></div><br>
+
+    <h2>Ou escreva sua própria mensagem:</h2>
+    <label for="mensagemManual" class="sr-only">Mensagem personalizada</label>
+    <textarea id="mensagemManual" placeholder="Escreva aqui sua mensagem..." maxlength="500" aria-describedby="mensagemHelp"></textarea>
+    <small id="mensagemHelp">Máximo de 500 caracteres.</small><br><br>
+
+    <button onclick="gerarMensagemAutomatica()">Gerar Mensagem Automática</button>
+    <button onclick="enviar()">Enviar</button>
+
+    <a href="#" class="whatsapp-btn" onclick="compartilhar()" aria-label="Compartilhar mensagem no WhatsApp">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" class="whatsapp-icon" alt="">
+      Compartilhar no WhatsApp
+    </a>
+  </section>
+
+  <div id="imagemPreview"></div>
+  <button id="btnDownload" aria-hidden="true">Baixar imagem</button>
+
+  <script>
+    const mensagens = [
+      "você é a luz que ilumina nossas vidas. Seu amor e carinho são inestimáveis. Queremos que saiba o quanto somos gratos e o quanto amamos você.",
+      "seu amor é o que nos guia todos os dias. Obrigado por ser essa pessoa maravilhosa em nossas vidas.",
+      "você é o alicerce da nossa família. Seu amor incondicional nos fortalece e nos inspira.",
+      "não existem palavras para expressar o quanto você é importante para nós. Te amamos mais que tudo!",
+      "seu abraço é o lugar mais seguro do mundo. Obrigado por sempre nos proteger e amar.",
+      "você merece todo o amor e felicidade do mundo. Hoje e sempre, celebramos você!",
+      "sua força e dedicação são admiráveis. Você é nossa heroína todos os dias.",
+      "seu sorriso ilumina nossos dias. Que você seja sempre tão feliz quanto nos faz.",
+      "você é a pessoa mais especial do mundo. Obrigado por todo seu amor e paciência.",
+      "seu coração é maior que o universo. Obrigado por nos amar tanto."
+    ];
+
+    let typingInterval = null;
+
+    // Função para gerar a mensagem automaticamente
+    function gerarMensagemAutomatica() {
+      const nome = $("#nomeMae").val().trim();
+
+      if (!nome) {
+        alert("Por favor, digite o nome da sua mãe.");
+        return;
+      }
+
+      const aleatoria = mensagens[Math.floor(Math.random() * mensagens.length)];
+      const mensagemFinal = `Querida ${nome},\n\n${aleatoria}`;
+      digitarTexto(mensagemFinal, "#mensagem", () => {
+        gerarImagemMensagem();
+      });
+    }
+
+    // Função para digitar o texto com efeito
+    function digitarTexto(texto, destino, callback) {
+      if (typingInterval) clearInterval(typingInterval);
+      $(destino).html("");
+      let i = 0;
+      typingInterval = setInterval(() => {
+        if (i < texto.length) {
+          $(destino).append(texto.charAt(i));
+          i++;
+        } else {
+          clearInterval(typingInterval);
+          typingInterval = null;
+          if (callback) callback();
+        }
+      }, 50);
+    }
+
+    // Função para gerar imagem com a mensagem
+    function gerarImagemMensagem() {
+      const mensagemDiv = document.getElementById("mensagem");
+      const container = document.createElement("div");
+      container.className = "message-style";
+
+      const texto = mensagemDiv.innerText;
+      const linhas = texto.split('\n');
+
+      // Adiciona o título "Querida Mamãe"
+      const titulo = document.createElement("div");
+      titulo.className = "message-title";
+      titulo.textContent = "Querida Mamãe";
+      container.appendChild(titulo);
+
+      // Adiciona o conteúdo da mensagem
+      const conteudo = document.createElement("div");
+      conteudo.className = "message-content";
+      for (let i = 0; i < linhas.length; i++) {
+        if (linhas[i].trim() !== '') {
+          const paragrafo = document.createElement("p");
+          paragrafo.textContent = linhas[i];
+          conteudo.appendChild(paragrafo);
+        }
+      }
+      container.appendChild(conteudo);
+
+      const preview = document.getElementById("imagemPreview");
+      preview.innerHTML = "";
+      preview.appendChild(container);
+
+      document.fonts.ready.then(() => {
+        html2canvas(container, { scale: 2 }).then(canvas => {
+          preview.innerHTML = "";
+          preview.appendChild(canvas);
+          const btnDownload = document.getElementById("btnDownload");
+          btnDownload.style.display = "inline-block";
+          btnDownload.setAttribute("aria-hidden", "false");
+
+          btnDownload.onclick = () => {
+            const link = document.createElement('a');
+            link.download = 'mensagem-dia-das-maes.png';
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+          };
+        });
+      });
+    }
+
+    // Função para compartilhar no WhatsApp
+    function compartilhar() {
+      const texto = $("#mensagem").text().trim();
+      if (!texto) {
+        alert("Por favor, gere ou envie uma mensagem primeiro.");
+        return false;
+      }
+      const link = `https://wa.me/?text=${encodeURIComponent(texto)}`;
+      window.open(link, "_blank");
+      return false;
+    }
+
+    // Função para enviar a mensagem
+    function enviar() {
+      const nome = $("#nomeMae").val().trim();
+      const manual = $("#mensagemManual").val().trim();
+
+      if (!nome) {
+        alert("Por favor, digite o nome da sua mãe.");
+        return;
+      }
+
+      if (!manual) {
+        alert("Por favor, escreva uma mensagem personalizada.");
+        return;
+      }
+
+      const mensagemFinal = `Querida ${nome},\n\n${manual}`;
+      digitarTexto(mensagemFinal, "#mensagem", () => {
+        gerarImagemMensagem();
+      });
+    }
+  </script>
+
+</body>
+</html>
